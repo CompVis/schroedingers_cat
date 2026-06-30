@@ -319,7 +319,8 @@
           <p>
 Predicting how a scene may evolve from partial observations requires reasoning about multiple possible futures rather than committing to a single trajectory.
 Existing approaches either generate appearance-dominated video predictions or sample a small number of trajectories without explicitly modeling the distribution of possible motion.
-We introduce a probabilistic model of scene kinematics that learns a <i>structured spatio-temporal latent representation</i> of the distribution over possible futures given an image and optional <i>spatio-temporally sparse constraints</i>.
+We introduce  Goal Aware Representations of Future kInEmatic Latent Distributions (GARFIELD), a probabilistic model of scene kinematics that learns a <i>structured spatio-temporal
+latent representation</i> of the distribution over possible futures given an image and optional <i>spatio-temporally sparse constraints</i>.
 The same latent representation enables both joint sampling of all trajectories and direct access to the underlying motion distribution through an efficient deterministic density decoder.
 As a result, uncertainty about future motion can be localized to specific scene elements and timesteps and progressively refined through additional constraints.
 Experiments demonstrate strong motion planning performance competitive with large video generation models while sampling trajectories 97× faster.
