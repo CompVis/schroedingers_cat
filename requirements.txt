@@ -1,0 +1,18 @@
+av
+click
+einops
+ffmpeg-python
+imageio
+imageio-ffmpeg
+jaxtyping
+matplotlib
+numpy
+omegaconf
+opencv-python
+pandas
+Pillow
+tapnet @ git+https://github.com/google-deepmind/tapnet.git@8eb7992afb74afe291e47252505a5a6cf82c37a2
+torch==2.7.0
+torchvision==0.22.0
+tqdm
+webdataset==0.2.111
