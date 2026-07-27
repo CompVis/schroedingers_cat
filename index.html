@@ -15,6 +15,8 @@
   <meta name="author" content="Timy Phan, Jannik Wiese, Björn Ommer">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
+  <link rel="icon" type="image/png" href="static/images/generic-orange-cat-favicon.png">
+  <link rel="apple-touch-icon" href="static/images/generic-orange-cat-favicon.png">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
@@ -217,7 +219,13 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">Schrödinger's Cat:<br class="mobile-break">Probabilistic Representation and Prediction of Potential Scene Kinematics</h1>
+            <div class="publication-heading">
+              <img class="publication-emoji" src="static/images/GARFIELD_emoji.png" alt="" aria-hidden="true">
+              <h1 class="title is-1 publication-title">
+                <span class="publication-title-line">Schrödinger's Cat:</span>
+                <span class="publication-title-line">Probabilistic Representation and Prediction of Potential Scene Kinematics</span>
+              </h1>
+            </div>
             <div class="is-size-5 publication-authors">
               <span class="author-block">
                 <a href="https://scholar.google.com/citations?user=yhTTLNgAAAAJ&hl=en" target="_blank">Timy Phan</a><sup>*</sup>,</span>
@@ -286,12 +294,14 @@
   </div>
 </section>
 
-<section class="hero is-small">
+<section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <img src="static/images/teaser.svg" alt="" style="width: 100%; height: auto;">
+          <video autoplay muted loop playsinline preload="metadata" style="width: 100%; height: auto;">
+            <source src="static/videos/teaser_video_v1_comp.mp4" type="video/mp4">
+          </video>
         </div>
       </div>
       <div class="container is-max-desktop">
@@ -299,7 +309,7 @@
           <div class="column is-four-fifths">
             <div class="content has-text-justified">
               <p style="margin-bottom: 20px; margin-top: 10px;">
-                <span style="font-weight: bold">Schrödinger's Cat:</span> Given the initial scene context as an image and a set of spatio-temporally sparse constraints or goals (<span style="color:#FF3C4F">×</span>), our method encodes the space of possible motions. By sampling from this space, our approach is able to plan realistic motion for conscious agents and inanimate objects, which we evaluate in applications such as robotics and trajectory prediction.
+                <span style="font-weight: bold">Schrödinger's Cat:</span> Given the scene context as an image and a set of spatio-temporally sparse constraints or goals (<span style="color:#FF3C4F">×</span>), our method encodes the space of possible motions and can decode heatmaps directly without expensive MC sampling.
               </p>
             </div>
           </div>
@@ -309,11 +319,32 @@
   </div>
   </section>
 
+<!-- TL;DR -->
+<section class="section tldr-section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-centered">TL;DR</h2>
+        <div class="content">
+          <ul class="tldr-list">
+            <li><strong>Possibility spaces</strong>: GARFIELD models future scene kinematics as a distribution over potential trajectories instead of predicting a single outcome.</li>
+            <li><strong>Structured uncertainty</strong>: Spatio-temporal latents localize uncertainty to specific scene elements and timesteps.</li>
+            <li><strong>Sparse control</strong>: Adding (sub-)goal constraints progressively collapses the space of plausible futures with minimal user input.</li>
+            <li><strong>Instant density estimation</strong>: The deterministic density decoder enables exploration of spatio-temporally localized uncertainty in a single ViT forward pass.</li>
+            <li><strong>Fast planning</strong>: GARFIELD enables 97× faster motion planning than video models and >100x faster density estimation than Monte-Carlo sampling with motion generators.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End TL;DR -->
+
 <!-- Paper abstract -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
+      <div class="column is-full">
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
@@ -334,18 +365,232 @@ Our method further estimates motion densities two orders of magnitude faster tha
 <!-- End paper abstract -->
 
 
-<!-- Coming soon -->
-
-
-<section class="section" id="Coming soon">
-    <div class="container is-max-desktop content">
-        <div class="columns is-centered has-text-centered">
-            <div class="column is-four-fifths">
-                <h2 class="title is-3">Coming soon</h2>
-            </div>
-        </div>
+<!-- Method -->
+<section class="section method-section" id="method">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Method</h2>
+    <figure class="method-figure">
+      <img src="static/images/method_fig.png" alt="GARFIELD architecture overview with joint encoder, pointwise decoder, full decoder, and density decoder">
+    </figure>
+    <div class="content has-text-justified method-copy">
+      <p>
+        GARFIELD represents future scene kinematics as localized motion distributions. Given an initial image and optional sparse constraints, a joint encoder produces spatio-temporal latents for scene elements over time. These latents encode uncertainty about where each element may move, and separate decoders expose that uncertainty as point samples, coherent trajectory rollouts, or probability heatmaps.
+      </p>
     </div>
+    <div class="method-components">
+      <figure class="method-card paper-figure">
+        <div class="method-card-media">
+          <img src="static/images/method_fig_only_enc.png" alt="Joint encoder producing localized spatio-temporal latents from image features and sparse constraints">
+        </div>
+        <figcaption><strong>Encoder.</strong> The joint encoder <em>E<sub>φ</sub></em> combines image features and sparse kinematic constraints into structured latents <em>z<sup>i</sup><sub>τ</sub></em>, each tied to one scene element and timestep.</figcaption>
+      </figure>
+      <figure class="method-card paper-figure">
+        <div class="method-card-media">
+          <img src="static/images/method_fig_only_point.png" alt="Pointwise decoder sampling individual future track positions from localized latents">
+        </div>
+        <figcaption><strong>Pointwise Decoder.</strong> The pointwise decoder <em>D<sup>p</sup><sub>ψ</sub></em> trains the latents to represent localized distributions by sampling individual future track positions from each latent component.</figcaption>
+      </figure>
+      <figure class="method-card paper-figure">
+        <div class="method-card-media">
+          <img src="static/images/method_fig_only_full.png" alt="Full decoder sampling complete coherent trajectories from all latents">
+        </div>
+        <figcaption><strong>Full Decoder.</strong> The full decoder <em>D<sub>θ</sub></em> samples complete trajectories jointly, preserving dependencies across points, timesteps, and scene elements for coherent motion realizations.</figcaption>
+      </figure>
+      <figure class="method-card paper-figure">
+        <div class="method-card-media">
+          <img src="static/images/method_fig_only_dense.png" alt="Density decoder mapping localized latents to future position probability heatmaps">
+        </div>
+        <figcaption><strong>Density Decoder.</strong> The density decoder <em>D<sup>d</sup><sub>ω</sub></em> deterministically maps localized latents to probability heatmaps, enabling fast uncertainty inspection without Monte-Carlo sampling.</figcaption>
+      </figure>
+    </div>
+  </div>
 </section>
+<!-- End Method -->
+
+<!-- Results -->
+<section class="section hero is-light" id="results">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Results</h2>
+    <figure class="results-figure">
+      <img src="static/images/teaser_lower.svg" alt="">
+    </figure>
+    <div class="results-caption">
+      <div class="content has-text-justified">
+        <p>
+          Our approach is able to plan realistic motion for conscious agents and inanimate objects, which we quantitatively evaluate in applications such as <strong>robotics</strong> and <strong>pedestrian trajectory prediction</strong>.
+        </p>
+      </div>
+    </div>
+    <div class="results-block">
+      <div class="content has-text-justified results-copy">
+        <p>
+          GARFIELD achieves the best motion planning accuracy across EPE, PCK@1%, and FDE while remaining text-free and goal-conditionable. It is also substantially faster than video generation baselines, reaching 0.40s latency compared to 39s for LTX and 178s for CogVideoX.
+        </p>
+      </div>
+      <div class="results-table-wrapper">
+        <table class="table is-fullwidth results-table motion-results-table">
+          <thead>
+            <tr>
+              <th colspan="2">Method</th>
+              <th class="has-text-centered">Text Free</th>
+              <th class="has-text-right">Num. Goals</th>
+              <th class="has-text-right">EPE &darr;</th>
+              <th class="has-text-right">PCK &uarr; @10%</th>
+              <th class="has-text-right">PCK &uarr; @1%</th>
+              <th class="has-text-right">FDE &darr;</th>
+              <th class="has-text-right">Latency &darr; [s]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="method-group" rowspan="2"><span>video</span></td>
+              <td>CogVideoX</td>
+              <td class="has-text-centered">No</td>
+              <td class="has-text-right">n/a</td>
+              <td class="has-text-right">0.027</td>
+              <td class="has-text-right">0.952</td>
+              <td class="has-text-right">0.466</td>
+              <td class="has-text-right">0.032</td>
+              <td class="has-text-right">178</td>
+            </tr>
+            <tr>
+              <td>LTX</td>
+              <td class="has-text-centered">No</td>
+              <td class="has-text-right">n/a</td>
+              <td class="has-text-right">0.025</td>
+              <td class="has-text-right">0.960</td>
+              <td class="has-text-right">0.464</td>
+              <td class="has-text-right">0.033</td>
+              <td class="has-text-right">39</td>
+            </tr>
+            <tr class="group-separator">
+              <td class="method-group" rowspan="7"><span>explicit motion</span></td>
+              <td rowspan="2">Motion-I2V</td>
+              <td class="has-text-centered" rowspan="2">No</td>
+              <td class="has-text-right">4</td>
+              <td class="has-text-right">0.055</td>
+              <td class="has-text-right">0.864</td>
+              <td class="has-text-right">0.150</td>
+              <td class="has-text-right">0.060</td>
+              <td class="has-text-right" rowspan="2">13.2</td>
+            </tr>
+            <tr>
+              <td class="has-text-right">16</td>
+              <td class="has-text-right">0.033</td>
+              <td class="has-text-right">0.957</td>
+              <td class="has-text-right">0.263</td>
+              <td class="has-text-right">0.037</td>
+            </tr>
+            <tr>
+              <td>Track2Act</td>
+              <td class="has-text-centered">Yes</td>
+              <td class="has-text-right">n/a</td>
+              <td class="has-text-right">0.041</td>
+              <td class="has-text-right">0.931</td>
+              <td class="has-text-right">0.091</td>
+              <td class="has-text-right">0.046</td>
+              <td class="has-text-right">4.10</td>
+            </tr>
+            <tr>
+              <td rowspan="2">FPT</td>
+              <td class="has-text-centered" rowspan="2">Yes</td>
+              <td class="has-text-right">4</td>
+              <td class="has-text-right">0.029</td>
+              <td class="has-text-right">0.936</td>
+              <td class="has-text-right">0.493</td>
+              <td class="has-text-right">0.035</td>
+              <td class="has-text-right" rowspan="2">0.60</td>
+            </tr>
+            <tr>
+              <td class="has-text-right">16</td>
+              <td class="has-text-right">0.026</td>
+              <td class="has-text-right">0.943</td>
+              <td class="has-text-right">0.523</td>
+              <td class="has-text-right">0.032</td>
+            </tr>
+            <tr class="ours-row">
+              <td rowspan="2">GARFIELD (Ours)</td>
+              <td class="has-text-centered" rowspan="2">Yes</td>
+              <td class="has-text-right">4</td>
+              <td class="has-text-right">0.020</td>
+              <td class="has-text-right">0.973</td>
+              <td class="has-text-right">0.544</td>
+              <td class="has-text-right">0.026</td>
+              <td class="has-text-right" rowspan="2"><strong>0.40</strong></td>
+            </tr>
+            <tr class="ours-row">
+              <td class="has-text-right">16</td>
+              <td class="has-text-right"><strong>0.013</strong></td>
+              <td class="has-text-right"><strong>0.989</strong></td>
+              <td class="has-text-right"><strong>0.666</strong></td>
+              <td class="has-text-right"><strong>0.017</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="results-figures">
+      <figure class="result-card paper-figure">
+        <div class="result-card-media">
+          <img src="static/images/prediction_min_ade.png" alt="Minimum endpoint error as a function of the number of conditioning points">
+        </div>
+        <figcaption><strong>Goal conditioning.</strong> GARFIELD infers accurate motion from very sparse information and, with only four conditioning points, outperforms Motion-I2V using sixteen.</figcaption>
+      </figure>
+      <figure class="result-card paper-figure">
+        <div class="result-card-media">
+          <img src="static/images/energy_score_vs_latency_new.png" alt="Discrete energy score versus latency for density estimation methods">
+        </div>
+        <figcaption><strong>Fast distributions.</strong> The density decoder achieves superior discrete energy scores while estimating motion densities orders of magnitude faster than Monte-Carlo sampling.</figcaption>
+      </figure>
+      <figure class="result-card paper-figure">
+        <div class="result-card-media">
+          <img src="static/images/entropy_vs_epe_cond_new_data.png" alt="Minimum endpoint error under entropy-based and error-based conditioning policies">
+        </div>
+        <figcaption><strong>Interactive conditioning.</strong> Selecting additional constraints by entropy collapses uncertainty without ground-truth errors and reaches comparable performance with fewer conditioning points.</figcaption>
+      </figure>
+      <figure class="result-card paper-figure">
+        <div class="result-card-media">
+          <img src="static/images/alt_objectives.png" alt="Comparison of pointwise, density, and full-decoder encoder training objectives">
+        </div>
+        <figcaption><strong>Training objective.</strong> Pointwise generative pretraining preserves strong trajectory sampling while keeping latents interpretable for density decoding; density-only or full-decoder pretraining degrades one of these uses.</figcaption>
+      </figure>
+    </div>
+    <figure class="density-video-card paper-figure">
+      <div class="density-video-grid">
+        <video autoplay muted loop playsinline preload="metadata" aria-label="Tiger attack density estimate with sparse conditioning">
+          <source src="static/videos/tiger_attack_density.mp4" type="video/mp4">
+        </video>
+        <video autoplay muted loop playsinline preload="metadata" aria-label="Falling ball density estimate with sparse conditioning">
+          <source src="static/videos/falling_ball_density.mp4" type="video/mp4">
+        </video>
+      </div>
+      <figcaption><strong>Density estimates.</strong> The density estimator infers meaningful motion distributions from minimal conditioning and produces sharper, more accurate distributions as additional constraints are provided.</figcaption>
+    </figure>
+  </div>
+</section>
+<!-- End Results -->
+
+<!-- BibTeX -->
+<section class="section" id="bibtex">
+  <div class="container is-max-desktop content">
+    <div class="bibtex-header">
+      <h2 class="title is-3">BibTeX</h2>
+      <button class="copy-bibtex-btn" type="button" onclick="copyBibTeX()">
+        <span class="icon">
+          <i class="fas fa-copy"></i>
+        </span>
+        <span class="copy-text">Copy</span>
+      </button>
+    </div>
+    <pre id="bibtex-code"><code>@inproceedings{phan2026schroedingerscat,
+  title     = {Schr{\"o}dinger's Cat: Probabilistic Representation and Prediction of Potential Scene Kinematics},
+  author    = {Timy Phan and Jannik Wiese and Bj{\"o}rn Ommer},
+  booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
+  year      = {2026}
+}</code></pre>
+  </div>
+</section>
+<!-- End BibTeX -->
 
 
   <footer class="footer">
