@@ -676,6 +676,21 @@ body {
   text-decoration: underline;
 }
 
+.visitor-map {
+  display: flex;
+  justify-content: center;
+  max-width: 300px;
+  margin: 1.2rem auto 1.5rem;
+  opacity: 0.72;
+  transform: scale(0.85);
+  transform-origin: top center;
+}
+
+.visitor-map:hover,
+.visitor-map:focus-within {
+  opacity: 1;
+}
+
 /* BibTeX Styling */
 pre {
   background: var(--background-accent) !important;
