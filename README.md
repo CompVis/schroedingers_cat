@@ -18,7 +18,7 @@
 <div align="center">
 
 [![Website](https://img.shields.io/badge/Project-Page-lightgrey)](https://compvis.github.io/schroedingers_cat/)
-[![Paper](https://img.shields.io/badge/arXiv-PDF-b31b1b)](!blank)
+[![Paper](https://img.shields.io/badge/arXiv-PDF-b31b1b)](https://arxiv.org/abs/2607.25984)
 [![Huggingface](https://img.shields.io/badge/Huggingface-Weights-orange)](https://huggingface.co/CompVis/schroedingers_cat)
 
 </div align="center">
@@ -183,10 +183,6 @@ python -m scripts.inference.qualitative_density \
 Tensor shapes, dtypes, and value ranges are documented with `typing.Annotated`, for example `Annotated[torch.Tensor, "B T N 2, float, [0, 1]"]`.
 
 Public model coordinates use `(x, y)` order and are normalized to `[0, 1]` relative to image width and height. The origin is the top-left corner, with `x` increasing rightward and `y` downward. TapNext shards store native `(y, x)` coordinates in `[-1, 1]`; the data loader converts them to the public convention. Images are normalized to `[-1, 1]`.
-
-## License
-
-The released model weights are licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.en).
 
 ## Code credit
 
